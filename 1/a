@@ -1,0 +1,7 @@
+#!/usr/bin/env raku
+
+my @lines = 'input'.IO.lines.map({$_.Int}).sort;
+
+my $n = @lines.first: (2020 - *) ∈ @lines;
+
+say $n * (2020 - $n);
