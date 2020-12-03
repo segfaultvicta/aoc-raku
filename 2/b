@@ -1,0 +1,18 @@
+#!/usr/bin/env raku
+
+sub MAIN(Str $infile where *.IO.f = 'input') {
+    my @lines = $infile.IO.lines;
+    my @rules = @lines.map: * ~~ /^ 
+        $<first> = (\d+) \- 
+        $<second> = (\d+) \s 
+        $<char> = (.)\: \s 
+        $<password> = (.+) 
+    $/;
+
+    my @valid = @rules.grep({ 
+        my @indices = $_<password>.indices($_<char>).map({$_ + 1});
+        ($_<first>.Int ∈ @indices) xor ($_<second>.Int ∈ @indices);
+        # I don't love this, there's probably a more elegant way to express this, but wahey
+    });
+    say @valid.elems;
+}

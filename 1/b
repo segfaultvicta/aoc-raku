@@ -1,10 +1,14 @@
 #!/usr/bin/env raku
 
-my @lines = 'input'.IO.lines;
-# test data, comment for the real thing:
-#@lines = ["1721", "979", "366", "299", "675", "1456"];
+sub MAIN(
+    Str $infile where *.IO.f = 'input'
+) {
+    my @lines = $infile.IO.lines;
+    @lines = @lines.map({$_.Int}).sort;
 
-@lines = @lines.map({$_.Int}).sort;
-
-my $n = @lines.combinations(2).map({ ($_[0] + $_[1], $_[0] * $_[1]) }).first({ (2020 - $_[0]) ∈ @lines });
-say $n[1] * (2020 - $n[0]);
+    my $n = @lines.combinations(2)
+        .map({ ($_[0] + $_[1], $_[0] * $_[1]) })
+        .first({ (2020 - $_[0]) ∈ @lines });
+        
+    say $n[1] * (2020 - $n[0]);
+}

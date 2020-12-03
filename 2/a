@@ -1,0 +1,14 @@
+#!/usr/bin/env raku
+
+sub MAIN(Str $infile where *.IO.f = 'input') {
+    my @lines = $infile.IO.lines;
+    my @rules = @lines.map: * ~~ /^ 
+        $<lo> = (\d+) \- 
+        $<hi> = (\d+) \s 
+        $<char> = (.)\: \s 
+        $<password> = (.+) 
+    $/;
+
+    my @valid = @rules.grep({ $_<lo> <= $_<password>.indices($_<char>).elems <= $_<hi> });
+    say @valid.elems;
+}
